@@ -26,7 +26,7 @@
 
 - **前端：**`Vue`+`Vue-router`+`Vuex`+`Element-ui`+`Axios`
 - **后端：**`SpringBoot` +`Redis`+ `RabbitMQ` + `Shiro` + `JWT`
-- **数据库：**`Mysql`
+- **数据库：**`Mysql` + `Mybatis Plus`
 
 ## 运行项目
 
