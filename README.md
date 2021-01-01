@@ -4,7 +4,7 @@
 
 ## 项目简介
 
-本项目前后端分离，前端基于`Vue`+`Vue-router`+`Vuex`+`Element-ui`+`Axios`。后端基于`SpringBoot` +`Redis`+ `RabbitMQ` + `Shiro` + `JWT`+ `MySQL` + `Mybatis Plus`实现。
+本项目前后端分离，前端基于`Vue`+`Vue-router`+`Vuex`+`Element-ui`+`Axios`。后端基于`SpringBoot` +`Redis`+ `RabbitMQ` + `Shiro` + `JWT`+ `Hibernate validatior` + `MySQL` + `Mybatis Plus`实现。
 
 前台实现了**用户登录**，**秒杀商品展示**，**秒杀商品**等功能。
 
