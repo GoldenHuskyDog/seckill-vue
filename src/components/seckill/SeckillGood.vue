@@ -91,6 +91,8 @@ export default {
       cb(new Error("请输入合法的正整数"));
     };
     return {
+      timer: null,
+      orderstate: "0",
       dialogVisible: false,
       addOrderForm: {
         number: 1,
@@ -119,8 +121,11 @@ export default {
     if (this.$route.query.seckillID != undefined) {
       this.seckillID = this.$route.query.seckillID;
     }
-    this.getDetails('')
-
+    this.getDetails('');
+  },
+  beforeDestroy() {
+    clearInterval(this.timer)
+    this.timer=null
   },
   // 通过路由获取商品id
   activated() {
@@ -141,36 +146,50 @@ export default {
     remainSeconds: function() {
       this.countDown();
     }
-
   },
   methods: {
     ...mapActions(),
     // 获取商品详细信息
+    getOrderState() {
+      const {data} = this.$axios.get("/orderstate", {
+        headers: {
+          "Authorization": localStorage.getItem("token")
+        }
+      }).then(res => {
+        console.log(res.data)
+        if (res.data.code === 200) {
+          clearInterval(this.timer)
+          this.$message.success("抢购成功！");
+        } else if (res.data.code === 210) {
+          clearInterval(this.timer)
+          this.$message.error("抢购失败！");
+        }
+      })
+    },
     getDetails(val) {
-      this.$axios
-          .get("/seckillDetails",{
-            params: {
-              "seckillID":this.seckillID,
-              "goodID":this.goodID
-            },
-            headers: {
-              "Authorization": localStorage.getItem("token")
-            }
-          })
+      this.$axios.get("/seckillDetails", {
+        params: {
+          "seckillID": this.seckillID,
+          "goodID": this.goodID
+        },
+        headers: {
+          "Authorization": localStorage.getItem("token")
+        }
+      })
           .then(res => {
             /*console.log(res.data)*/
             this.goodDetails = res.data.data;
             /*console.log(this.goodDetails.startTime)
             console.log(new Date().getTime())*/
             if (this.goodDetails.startTime > new Date().getTime()) {
-              this.remainSeconds = Math.floor(this.goodDetails.startTime/1000 - new Date().getTime()/1000);
+              this.remainSeconds = Math.floor(this.goodDetails.startTime / 1000 - new Date().getTime() / 1000);
               this.testTime = this.remainSeconds;
               this.seckillState = 0;
-            }else if(new Date().getTime() > this.goodDetails.endTime) {
+            } else if (new Date().getTime() > this.goodDetails.endTime) {
               this.seckillState = 2;
               this.remainSeconds = 0;
               this.testTime = this.remainSeconds;
-            }else{
+            } else {
               this.seckillState = 1;
               this.remainSeconds = 0;
               this.testTime = this.remainSeconds;
@@ -183,13 +202,13 @@ export default {
 
     },
     countDown() {
-      let _this=this;
+      let _this = this;
       if (_this.testTime > 0) {
         _this.testTime = _this.testTime - 1;
-        setTimeout(function() {
+        setTimeout(function () {
           _this.countDown(_this.testTime);
-        },1000)
-      }else if (_this.testTime <= 0) {
+        }, 1000)
+      } else if (_this.testTime <= 0) {
         this.seckillState = 1;
         this.dis = false;
       }
@@ -200,24 +219,27 @@ export default {
     addOrder() {
       this.$refs.addOrderFormRef.validate(async valid => {
         if (!valid) return;
-        const { data } = await this.$axios.post("/order",{
+        const {data} = await this.$axios.post("/order", {
           "id": this.seckillID,
           "userid": this.$store.getters.getUser.id,
           "goodid": this.goodID,
           "number": this.addOrderForm.number,
-          "time": new Date().getTime()
-        },{
+          "time": new Date().getTime(),
+          "path": this.goodDetails.path
+        }, {
           headers: {
             "Authorization": localStorage.getItem("token")
-          }});
+          }
+        });
         if (data.code === 210) {
           this.$message.error("抢单失败！");
-        }else if(data.code === 200) {
-          this.$message.success("下单成功！");
+        } else if (data.code === 200) {
+          this.$message.success("排队中...");
+          this.timer = setInterval(()=>this.getOrderState(),1000);
         }
         this.dialogVisible = false;
       });
-    }
+    },
   }
 };
 </script>

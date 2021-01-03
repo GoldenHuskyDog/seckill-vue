@@ -29,7 +29,6 @@ export default {
   methods: {
     async getRoleList() {
       const { data } = await this.$axios.get("roles");
-      /*console.log(data)*/
       if (data.code !== 200) {
         return this.$message.error(data.msg);
       }

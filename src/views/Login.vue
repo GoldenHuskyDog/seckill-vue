@@ -91,23 +91,19 @@ export default {
         if (valid) {
           const _this = this
           this.$axios.post('/login', this.ruleForm).then(res => {
-         /* console.log(res.data)*/
           const jwt = res.headers['authorization']
           const userInfo = res.data.data
           _this.$store.commit("SET_TOKEN", jwt)
           _this.$store.commit("SET_USERINFO", userInfo)
 
-          // 获取
-         /* console.log(_this.$store.getters.getUser)*/
+            // 根据用户角色决定跳转页面
            if(userInfo.rolename === "user"){//普通用户
               _this.$router.push('/seckill')//前台商品界面
             }else{                        //后台管理员
               _this.$router.push('/home')//后台商品管理界面
             }
-           /* console.log(res.data)*/
           })
         } else {
-         /* console.log('error submit!!');*/
           return false;
         }
       });

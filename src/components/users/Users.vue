@@ -278,7 +278,6 @@ export default {
         },
         params: this.queryInfo
       });
-      /*console.log(data)*/
       this.userlist = data.data;
       this.total = data.data.total;
     },
@@ -345,7 +344,6 @@ export default {
           headers: {
             "Authorization": localStorage.getItem("token")
           }});
-    /*    console.log(data)*/
         if (data.code !== 200) {
           this.$message.error("修改用户信息失败！");
         }

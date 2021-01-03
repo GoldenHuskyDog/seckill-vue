@@ -244,7 +244,6 @@ export default {
           "Authorization": localStorage.getItem("token")
         }
       });
-    /*  console.log(data)*/
       if (data.code !== 200) {
         return this.$message.error(data.msg);
       }
@@ -272,7 +271,6 @@ export default {
           headers: {
             "Authorization": localStorage.getItem("token")
           }});
-       /* console.log(data)*/
         if (data.code !== 200) {
           this.$message.error(data.msg);
         }else {

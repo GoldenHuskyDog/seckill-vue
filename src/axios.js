@@ -16,7 +16,7 @@ axios.interceptors.request.use(config => {
 axios.interceptors.response.use(response => {
     let res = response.data;
     /*console.log(res)*/
-    if (res.code === 200 || res.code === 210) {
+    if (res.code === 200 || res.code === 210 || res.code === 220) {
         return response
     }else if(res.code === 400 || res.code === 401 || res.code === 402 || res.code === 403 || res.code === 404){
         router.go(-1)

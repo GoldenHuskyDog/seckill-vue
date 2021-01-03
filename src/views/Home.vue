@@ -76,7 +76,6 @@ export default {
           "Authorization": localStorage.getItem("token")
         }
       });
-     /* console.log(data.data)*/
       if (data.code === 200) {
         this.menulist = data.data
       } else {
