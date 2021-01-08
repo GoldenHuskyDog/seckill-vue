@@ -127,26 +127,26 @@
           cancelButtonText: "取消",
           type: "warning"
         })
-                .then(async () => {
-                  const { data } = await this.$axios.delete(`orders/${id}`,{
-                    headers: {
-                      "Authorization": localStorage.getItem("token")
-                    }});
-                  if (data.code !== 200) {
-                    return this.$message.error(data.msg);
-                  }
-                  this.getOrdersList();
-                  this.$message({
-                    type: "success",
-                    message: "删除成功!"
-                  });
-                })
-                .catch(() => {
-                  this.$message({
-                    type: "info",
-                    message: "已取消删除"
-                  });
-                });
+        .then(async () => {
+          const { data } = await this.$axios.delete(`orders/${id}`,{
+            headers: {
+              "Authorization": localStorage.getItem("token")
+            }});
+          if (data.code !== 200) {
+            return this.$message.error(data.msg);
+          }
+          this.getOrdersList();
+          this.$message({
+            type: "success",
+            message: "删除成功!"
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
       },
     },
     created() {

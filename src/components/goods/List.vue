@@ -201,7 +201,7 @@ export default {
         },
         params: this.queryInfo
       });
-      /*console.log(data)*/
+
       if (data.code !== 200) {
         return this.$message.error(data.msg);
       }
@@ -250,7 +250,6 @@ export default {
       this.$refs.editGoodFormRef.resetFields();
     },
     editGood() {
-      /*console.log(this.editGoodForm)*/
       this.$refs.editGoodFormRef.validate(async valid => {
         if (!valid) return;
         const { data } = await this.$axios.put(`goods/${this.editGoodForm.id}`, {
